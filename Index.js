@@ -23,9 +23,8 @@ const MongoDBStore = require("connect-mongo")(session);
 
 const dbUrl = process.env.DB_URL;
 
-newUrl = "mongodb://localhost:27017/yelp-camp";
- console.log("mongodb+srv://User20:Mummy@cluster0.m2c0bsq.mongodb.net/test?retryWrites=true&w=majority" + "    this is dburl");
- console.log(newUrl)
+
+ 
 
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
