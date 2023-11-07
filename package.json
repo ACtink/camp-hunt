@@ -5,8 +5,7 @@
   "main": "Index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node Index.js",
-    "build": "npm build"
+    "start": "node Index.js"
   },
   "keywords": [],
   "author": "",
