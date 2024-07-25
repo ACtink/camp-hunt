@@ -23,19 +23,19 @@ const MongoDBStore = require("connect-mongo")(session);
 
 const dbUrl = process.env.DB_URL;
 
-
-mongoose.connect(dbUrl, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-}).then(()=>{
-  console.log("Database connected")
-}).catch((err)=>{
-  console.log(err)
-})
-
-
+mongoose
+  .connect(dbUrl, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const app = express();
 

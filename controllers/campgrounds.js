@@ -2,7 +2,9 @@ const Campground = require('../models/campground');
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+
 const { cloudinary } = require("../cloudinary");
+const campground = require('../models/campground');
 
 
 module.exports.index = async (req, res) => {
@@ -10,17 +12,40 @@ module.exports.index = async (req, res) => {
     res.render('campgrounds/index', { campgrounds })
 }
 
+
+console.log(mapBoxToken + " today date ")
+console.log(JSON.stringify(geocoder) + " today date ")
+
+
+const getGeoData = async(locationToSearch)=>{
+
+     const geoData = await geocoder
+       .forwardGeocode({
+         query: locationToSearch,
+         limit: 1,
+       })
+       .send();
+
+       return geoData
+
+}
+
+
 module.exports.renderNewForm = (req, res) => {
     res.render('campgrounds/new');
 }
 
 module.exports.createCampground = async (req, res, next) => {
-    const geoData = await geocoder.forwardGeocode({
-        query: req.body.campground.location,
-        limit: 1
-    }).send()
+    // const geoData = await geocoder.forwardGeocode({
+    //     query: req.body.campground.location,
+    //     limit: 1
+    // }).send()
+
+
+    const geoData = await getGeoData(req.body.campground.location);
     const campground = new Campground(req.body.campground);
     campground.geometry = geoData.body.features[0].geometry;
+    console.log(campground.geometry)
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.author = req.user._id;
     await campground.save();
@@ -56,7 +81,18 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateCampground = async (req, res) => {
     const { id } = req.params;
     console.log(req.body);
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+
+
+
+        const geoData = await getGeoData(req.body.campground.location);
+    const campground = await Campground.findByIdAndUpdate(id, {
+      ...req.body.campground
+    });
+
+        campground.geometry = geoData.body.features[0].geometry;
+
+
+
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.images.push(...imgs);
     await campground.save();
