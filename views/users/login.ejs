@@ -1,33 +1,57 @@
-<% layout('layouts/boilerplate')%>
+<% layout('layouts/boilerplate') %>
 
-<div class="container d-flex justify-content-center align-items-center mt-5">
-    <div class="row">
-        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
-            <div class="card shadow">
+<div class="container-fluid d-flex justify-content-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg" style="border-radius: 1rem; overflow: hidden;">
                 <img src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
-                    alt="" class="card-img-top" />
+                    alt="Scenic view" class="card-img-top" style="border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
                 <div class="card-body">
-                    <h5 class="card-title">Login</h5>
-                    <form action="/login" method="POST" class="validated-form" novalidate>
-                        <div class="mb-3">
-                            <label class="form-label" for="username">Username</label>
-                            <input class="form-control" type="text" id="username" name="username" autofocus required>
+                    <h5 class="card-title text-center">Login</h5>
+                    <form action="/login" method="POST" class="needs-validation" novalidate>
+                        <div class="form-group pb-3">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
+                            <div class="invalid-feedback">
+                                Please enter a username.
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label" for="password">Password</label>
-                            <input class="form-control" type="password" id="password" name="password" required>
+                        <div class="form-group pb-3">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
+                            <div class="invalid-feedback">
+                                Please enter a password.
+                            </div>
                         </div>
-                        <button class="btn btn-success btn-block">Login</button>
+                        <button type="submit" class="btn btn-success btn-block">Login</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Custom Bootstrap validation script
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
